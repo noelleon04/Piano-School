@@ -13,6 +13,15 @@
 # testing
 /coverage
 
+# local design prototypes and QA screenshots
+# These are working/reference artifacts, not files used by the Next.js app.
+/design/
+/qa-*.png
+
+# local AI workspace instructions
+/AGENTS.md
+/CLAUDE.md
+
 # next.js
 /.next/
 /out/
@@ -22,6 +31,8 @@
 
 # misc
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.pem
 
 # debug
