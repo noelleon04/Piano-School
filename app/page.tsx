@@ -1,25 +1,6 @@
 import styles from "./page.module.css";
+import PianoExplorer from "./Components/PianoExplorer/PianoExplorer";
 
-const programCards = [
-  {
-    number: "01",
-    title: "Music discovery",
-    description:
-      "Beginner piano activities are part of the proposal. The exact repertoire and lesson format remain to be confirmed.",
-  },
-  {
-    number: "02",
-    title: "Creative play",
-    description:
-      "The concept explores how first musical steps could feel playful in a daycare setting. No final activity plan is confirmed.",
-  },
-  {
-    number: "03",
-    title: "Daycare fit",
-    description:
-      "Timing, group size, staffing, classroom setup, and any enrolment process are all still to be confirmed.",
-  },
-];
 
 const processSteps = [
   {
@@ -171,17 +152,7 @@ export default function Home() {
             <p className={styles.sectionLabel}>The program concept</p>
             <h2 id="program-heading">Music, creativity, and a thoughtful daycare fit.</h2>
           </div>
-          <div className={styles.cardGrid}>
-            {programCards.map((card) => (
-              <article className={styles.programCard} key={card.title}>
-                <span className={styles.cardNumber} aria-hidden="true">
-                  {card.number}
-                </span>
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
-              </article>
-            ))}
-          </div>
+          <PianoExplorer />
         </section>
 
         <section className={styles.processSection} id="how-it-works" aria-labelledby="process-heading">
