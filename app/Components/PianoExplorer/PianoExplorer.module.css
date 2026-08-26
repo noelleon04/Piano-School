@@ -1,119 +1,148 @@
-.pianoKeys{
+.pianoKeys {
+  --ink: #233553;
+  --ink-soft: #506078;
+  --coral: #c93f32;
+  --paper: #fffaf0;
+  --teal: #42b5aa;
+  --yellow: #ffb62d;
+
+  position: relative;
+  isolation: isolate;
   display: grid;
-  place-items:center;
-  grid-template-columns: minmax(18rem, 22rem) minmax(0,1fr);
-  align-items:center;
-  gap: clamp(2rem.6vw, 5rem);
+  grid-template-columns: 410px minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  min-height: 32.5rem;
+  padding: 54px 64px;
+  overflow: hidden;
+  border: 1px solid rgb(35 53 83 / 9%);
+  border-radius: 2.75rem;
+  background: #edf3ed;
+  box-shadow: 0 1.25rem 3.6rem rgb(35 53 83 / 10%);
+  gap: 80px;
+}
+
+.pianoKeys::before,
+.pianoKeys::after {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.pianoKeys::before {
+  top: -6rem;
+  left: -4.75rem;
+  width: 21.25rem;
+  height: 21.25rem;
+  background: rgb(66 181 170 / 13%);
+}
+
+.pianoKeys::after {
+  right: -4.75rem;
+  bottom: -9.4rem;
+  width: 19.4rem;
+  height: 19.4rem;
+  background: rgb(255 182 45 / 13%);
+}
+
+.pianoStage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
   width: 100%;
 }
 
-@media (max-width: 720px) {
-  .pianoKeys {
-    grid-template-columns: 1fr;
-  }
-}
-
 .pianoContainer {
-  width: min(92vw, 22rem);
+  width: 100%;
+  max-width: 22rem;
   padding: 0.9rem;
-
-  background: #233553;
   border-radius: 1.25rem;
-
+  background: var(--ink);
   box-shadow: 0 1.2rem 2rem rgb(35 53 83 / 20%);
 }
 
 .pianoHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
   min-height: 2.5rem;
-  margin-bottom: 0.7rem;
+  margin: 0 0 0.7rem;
   padding-inline: 0.2rem;
-
-  color: #fffaf0;
+  color: var(--paper);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .keyField {
   position: relative;
-
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 3px;
-
   width: 100%;
-  aspect-ratio: 7 / 4;
+  height: clamp(15rem, 56vw, 20rem);
+  gap: 3px;
 }
 
 .keys {
   appearance: none;
-
-  min-width: 0;
-  height: 20rem;
-  padding: 0 0 0.55rem;
-
   display: flex;
   align-items: flex-end;
   justify-content: center;
-
-  background: #fffaf0;
+  min-width: 0;
+  height: 100%;
+  padding: 0 0 0.55rem;
   border: 0;
   border-radius: 0 0 1.2rem 1.2rem;
-
+  color: var(--ink);
+  background: var(--paper);
   box-shadow: inset 0 -0.5rem 0 rgb(35 53 83 / 10%);
-
   cursor: pointer;
-
-    transition:
-    background-color 100ms ease,
+  touch-action: manipulation;
+  transition:
     color 100ms ease,
+    background-color 100ms ease,
     transform 100ms ease,
     box-shadow 100ms ease;
 }
 
-.keys:hover{
-  background-color: #ffe3a3;
+.keys:hover {
+  background: #ffe3a3;
+}
+
+.keys:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: -5px;
+}
+
+.keys:active {
+  transform: translateY(4px);
+}
+
+.keyLabel {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0 0 3.1rem;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  font-weight: 300;
 }
 
 .blackKeys {
   position: absolute;
   z-index: 2;
   top: 0;
-
-  /* Narrower and shorter */
   width: 11%;
   height: 46%;
-
   min-width: 0;
   min-height: 0;
-
+  border-radius: 0 0 0.5rem 0.5rem;
   background: #172139;
-  border-radius: 0 0 0.50rem 0.50rem;
-
   box-shadow: 0 0.3rem 0 #0d1426;
-
   transform: translateX(-50%);
   pointer-events: none;
-}
-
-.keyLabel {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin: 0;
-
-  display: grid;
-  place-items: center;
-
-  color: #233553;
-  border-radius: 50%;
-
-  font-size: 1.3rem;
-  font-weight: 300;
-
-  transform: translateY(-50px);
 }
 
 .fSharp {
@@ -128,13 +157,150 @@
   left: 75%;
 }
 
-.changeKey{
-  background-color: #b9362c;
-  transform: translateY(7px);
+.changeKey {
+  color: white;
+  background: #b9362c;
   box-shadow: inset 0 -0.25rem 0 rgb(35 53 83 / 22%);
-
-}
-.changeKey:hover{
-  background-color:  #c93f32;
+  transform: translateY(7px);
 }
 
+.changeKey:hover {
+  background: var(--coral);
+}
+
+.pianoCaption {
+  margin: 1.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.detailPanel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 33.75rem;
+  color: var(--ink);
+}
+
+.detailMeta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: var(--coral);
+  gap: 0.8rem;
+}
+
+.detailNote {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: white;
+  background: var(--coral);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.detailKicker {
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.detailPanel h3 {
+  max-width: 30rem;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.45rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.detailCopy {
+  max-width: 31.9rem;
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.7vw, 1.125rem);
+  line-height: 1.7;
+}
+
+.detailStatus {
+  display: inline-flex;
+  align-items: center;
+  margin: 1.9rem 0 0;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgb(66 181 170 / 16%);
+  font-size: 0.75rem;
+  font-weight: 800;
+  gap: 0.5rem;
+}
+
+.detailStatus::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--teal);
+  content: "";
+}
+
+@media (max-width: 850px) {
+  .pianoKeys {
+    grid-template-columns: 1fr;
+    padding: clamp(2rem, 7vw, 3rem) clamp(1.25rem, 5vw, 2rem);
+    border-radius: 2rem;
+    gap: 3rem;
+  }
+
+  .detailPanel {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .pianoKeys {
+    padding-inline: 0.9rem;
+    border-radius: 1.5rem;
+  }
+
+  .pianoContainer {
+    padding: 0.7rem;
+    border-radius: 1rem;
+  }
+
+  .pianoHeader {
+    font-size: 0.72rem;
+  }
+
+  .keyField {
+    height: 14rem;
+  }
+
+  .keyLabel {
+    margin-bottom: 2rem;
+  }
+
+  .detailStatus {
+    align-items: flex-start;
+    border-radius: 1rem;
+  }
+
+  .detailStatus::before {
+    margin-top: 0.22rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keys {
+    transition: none;
+  }
+}
