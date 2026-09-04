@@ -40,8 +40,7 @@ export default function PianoExplorer() {
   return (
     <section
       aria-label="Interactive program explorer"
-      className={styles.pianoKeys}
-    >
+      className={styles.pianoKeys}>
       <div className={styles.pianoStage}>
         <div className={styles.pianoContainer}>
           <p className={styles.pianoHeader}>
@@ -64,7 +63,7 @@ export default function PianoExplorer() {
                   aria-pressed={isSelected}
                   className={`${styles.keys} ${isSelected ? styles.changeKey : ""}`}
                   key={note}
-                  onClick={() => setSelectedKey(note)}
+                  onClick={() =>setSelectedKey(note)}
                   type="button"
                   value={note}
                 >
