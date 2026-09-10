@@ -1,26 +1,43 @@
+"use client";
+
+import { useState } from "react";
 import CourseBook from "./CourseBook";
+import OpenBook from "./openBook";
 import { courseContent } from "./courseBookData";
-import styles from "./CourseBook.module.css"
+import type { CourseId } from "./CourseBook.types";
+import styles from "./CourseBook.module.css";
 
-type CourseId = keyof typeof courseContent;
-
-const courseIds = Object.keys(courseContent) as CourseId[]
+const courseIds = Object.keys(courseContent) as CourseId[];
 
 export default function CourseBooksPage() {
+  const [idSelected, setId] = useState<CourseId>("English");
+  const [isOpen, setOpen] = useState(false);
+  const selectedBook = courseContent[idSelected];
+
   return (
     <main>
-      <div className = {styles.openBookContainer}>
-        <div className = {styles.openBook}>
-          <span ></span>
-        </div>
-      </div>
-      <div className = {styles.bookWrapper} >
-        {courseIds.map((courseId) =>{
+      <OpenBook
+        courseId={idSelected}
+        courseDetails={selectedBook.courseDetail}
+        isOpen={isOpen}
+        onclick={() => setOpen(false)}
+      />
+      <div className={styles.bookWrapper}>
+        {courseIds.map((courseId) => {
           const course = courseContent[courseId];
-          return(
-            <CourseBook key= {courseId} courseId = {courseId} cover = {course.cover}></CourseBook>
-          )
+          return (
+            <CourseBook
+              key={courseId}
+              courseId={courseId}
+              cover={course.cover}
+              onclick={() => {
+                setId(courseId);
+                setOpen(true);
+              }}
+            />
+          );
         })}
       </div>
-      </main>
-    )}
+    </main>
+  );
+}

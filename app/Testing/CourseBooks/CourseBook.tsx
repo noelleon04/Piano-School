@@ -1,4 +1,4 @@
-
+"use client"
 
 import type { CoverProp } from "./CourseBook.types";
 import styles from "./CourseBook.module.css";
@@ -12,12 +12,14 @@ const bookFont = Inter({
 export default function CourseBook({
   courseId,
   cover,
+  onclick,
 } : CoverProp){
   return(
     <button data-course-id = {courseId}
             data-theme = {cover.theme}
             type = "button"
             className = {`${styles.bookButton} ${bookFont.className} `}
+            onClick={onclick}
       >
         <span className= {styles.book} >
           <span className = {styles.cover}>

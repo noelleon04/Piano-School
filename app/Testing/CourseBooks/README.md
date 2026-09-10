@@ -1,31 +1,25 @@
 # CourseBook learning workspace
 
-This folder is a starter workspace for rebuilding the approved piano-book mockup as a reusable React and TypeScript component.
+Route: `/Testing/CourseBooks`.
 
-No component, styling, interaction, course data, or page integration has been implemented yet. The existing piano-key experiment is preserved separately in `app/Testing/PianoKeys`.
+This is the simpler learning version: five book covers, selected-course state, and a basic details overlay with an X button. The full open-book design and sample reservation form remain in `Docs/piano-book-minimal-mockup.html` as a separate reference.
 
-## Files
+## Follow the state flow
 
-- `CourseBook.types.ts` — define the shape of the props accepted by one book.
-- `courseBookData.ts` — create placeholder objects for Piano, French, Math, English, and Music Adventure.
-- `CourseBook.tsx` — build one reusable book component.
-- `CourseBook.module.css` — recreate the cover, pages, shadow, and hover-opening effect.
+1. `page.tsx` owns `idSelected` and `isOpen`.
+2. Clicking a cover calls its `onclick` prop. The parent selects that course and sets `isOpen` to `true`.
+3. `selectedBook` is calculated from `courseContent[idSelected]` on each render.
+4. `OpenBook` receives the selected details and `isOpen`. Its inline style makes the overlay visible or hidden.
+5. The X button calls the `onclick` callback supplied by the parent, which sets `isOpen` to `false`.
 
-## Recommended build order
+The custom prop is named `onclick` to match your original code and types. The actual HTML button prop must be `onClick`. Custom prop names can differ, but their spelling must match between the caller, component, and type.
 
-1. Define `CourseBookProps` in `CourseBook.types.ts`.
-2. Build one static book in `CourseBook.tsx` using those props.
-3. Add the shared book styles in `CourseBook.module.css`.
-4. Add placeholder course objects in `courseBookData.ts`.
-5. Create `app/Testing/CourseBooks/page.tsx` and map over that data to render all five books.
-6. Add click state and the course-detail view only after the static books work.
+## Next learning step
 
-## React and Next.js boundary
+Practice passing one additional value into `OpenBook`, such as the course's display title, and rendering it instead of the course ID. Keep the selected ID as the state value; derive the rest from the course data.
 
-The static book can remain a Server Component. When you add state or click handlers, place `"use client"` at the top of the smallest interactive component rather than converting the entire page unnecessarily.
+The overlay is intentionally a basic learning component. Keyboard focus management and the full reservation flow are later steps.
 
-CSS Modules are appropriate here because their class names are scoped to this component and will not collide with the existing Testing-page styles.
+## Check the result
 
-## Design reference
-
-Use the approved [`piano-book-minimal-mockup.html`](../../../../../../../Docs/piano-book-minimal-mockup.html) as the visual reference. Treat its course copy, schedules, prices, ages, and availability as placeholders unless separately confirmed.
+Open a book, confirm its ID and details, close it with X, and open a different book. The main website and design mockup are separate from this testing route.

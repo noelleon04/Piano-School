@@ -39,9 +39,12 @@ export type CourseId = keyof CourseContent;
 export type CoverProp = {
   courseId: CourseId;
   cover: Cover;
+  onclick : ()=> void;
 }
 
 export type openBookProp = {
+  isOpen: boolean;
   courseId: CourseId;
   courseDetails: CourseDetails;
+  onclick : ()=>void;
 }
