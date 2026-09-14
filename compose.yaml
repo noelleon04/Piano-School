@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: Piano-School-Postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: piano_school
+      POSTGRES_USER: piano_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - piano_school_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U piano_app -d piano_school"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  piano_school_postgres_data:
