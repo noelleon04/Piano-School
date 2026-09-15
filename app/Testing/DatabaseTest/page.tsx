@@ -5,17 +5,14 @@ export default async function DatabaseTestPage() {
 
     console.log(courses);
 
-    const courseId = courses.map((courses)=>{ 
-        return courses.course_id;
-    })
 
     return (
         <div>
             <h1>All course</h1>
             <ul>
-                {courseId.map((courseId)=>{
+                {courses.map((courseId)=>{
                     return (
-                    <li>{courseId}</li>
+                    <li>{courseId.cover.courseTitle}</li>
                 )
                 })}
             </ul>

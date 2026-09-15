@@ -19,5 +19,4 @@ CREATE TABLE IF NOT EXISTS courses (
 
 COMMIT;
 
-
-
+ 

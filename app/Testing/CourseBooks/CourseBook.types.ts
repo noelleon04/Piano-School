@@ -7,6 +7,8 @@ export type ColourTheme =
 | "Blue"
 | "Purple"
 
+export type CourseId = string;
+
 export type  Cover = {
    courseTitle: string;
    symbol: string;
@@ -22,19 +24,14 @@ export type CourseDetails = {
 }
 
 export type Course = {
+  courseId:CourseId;
   cover: Cover;
   courseDetail: CourseDetails;
 }
 
-export type CourseContent ={
-  Piano: Course;
-  French: Course;
-  Math: Course;
-  English: Course;
-  MusicAdventure: Course;
+export type CourseProp ={
+  Courses: Course[];
 }
-
-export type CourseId = keyof CourseContent;
 
 export type CoverProp = {
   courseId: CourseId;
