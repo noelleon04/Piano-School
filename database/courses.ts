@@ -44,3 +44,4 @@ export async function getCourses() : Promise<Course[]>{
 
     return transformedCourses;
 }
+

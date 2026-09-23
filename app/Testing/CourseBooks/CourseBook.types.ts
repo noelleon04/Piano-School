@@ -31,6 +31,7 @@ export type Course = {
 
 export type CourseProp ={
   Courses: Course[];
+  Offerings: Offering[];
 }
 
 export type CoverProp = {
@@ -43,5 +44,33 @@ export type openBookProp = {
   isOpen: boolean;
   courseId: CourseId;
   courseDetails: CourseDetails;
+  OfferingArray: Offering[];
   onclick : ()=>void;
 }
+
+
+
+export type Offering = {
+  offeringId: number;
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+  courseId: string; 
+  isVisible: boolean;
+  isOpen: boolean;
+  capacity: number;
+}
+
+export type daysOfWeek = 
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday"
+  | "Unavailable"
+  | "Start";
+
+
+
