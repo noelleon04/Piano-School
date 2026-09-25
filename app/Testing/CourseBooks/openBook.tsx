@@ -10,6 +10,20 @@ const bookFont = Inter({
   weight: "variable",
 });
 
+function formatTime(time:string) : string{
+  const [hours,minutes] = time.split(":");
+  const hour = Number(hours);
+
+  const period = hour >= 12? "PM" : "AM";
+  let displayHour = hour %12;
+
+  if(displayHour=== 0) {
+    displayHour = 12;
+  }
+
+  return `${displayHour}:${minutes} ${period}`;
+}
+
 
 export default function OpenBook({
   courseId,
@@ -76,7 +90,7 @@ export default function OpenBook({
                       value = {offering.offeringId}
                       checked ={ offeringSelected == offering.offeringId}
                       onChange = {()=>{setOffering(offering.offeringId)}}/>
-                      <span>{offering.startTime}</span>            
+                      <span>{formatTime(offering.startTime)}</span>            
                   </label>
                 )
               }

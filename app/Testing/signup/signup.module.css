@@ -1,0 +1,77 @@
+.signUpNav {
+    min-height: 50px;
+    background-color:lightblue;
+    border-bottom: 1px solid black;
+    width: 70%;
+    margin-inline: auto;
+}
+.mainSignup{
+    width:70%;
+    background-color: lightcoral;
+    margin-inline: auto;
+}
+
+.signupBack{
+    margin-top: 20px ;
+    margin-bottom: 20px;
+}
+
+.signupContent{
+    display:flex;
+    background-color:lightcyan;
+    gap:100px;
+    align-items:flex-start;
+}
+
+.signupDetails{
+    flex: 1;
+}
+
+.signupBookCard{
+    flex:1;
+}
+
+.courseCode{
+    margin-top:20px;
+    margin-bottom:20px;
+    background-color: lightgreen;
+    display:inline-flex;
+}
+
+.signupTitle{
+    font-size: 60px;
+    font-weight:800;
+    margin-bottom: 20px;
+}
+
+.signupParagraph{
+    margin-bottom: 20px;
+}
+
+.doubleLine{
+    display:flex;
+    gap:40px;
+    border-top: 1px solid #17355d;
+    border-bottom: 1px solid #17355d;
+    margin-bottom:20px;
+    margin-top:20px;
+}
+
+.doubleLine > div{
+    flex: 1;
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.signupDetails > h2 {
+    margin-bottom: 20px;
+}
+.signupDetails  > p{
+    margin-bottom:20px;
+}
+
+.signupSmallText{
+    font-size:12px;
+    border-left: 2px solid yellow;
+    padding-left:20px;
+}
