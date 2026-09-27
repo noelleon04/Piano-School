@@ -34,7 +34,7 @@ export default function Signup (){
                     <p>Choose your day and time, then add your details.</p>
                     <div className = {styles.selectDiv}>
                         <p>Lesson day</p>
-                        <select name="" id="">
+                        <select className = {styles.selectOption} name="" id="">
                             <option>Saturday</option>
                             <option>Sunday</option>
                         </select>
@@ -69,6 +69,7 @@ export default function Signup (){
                         </div>
                     </div>
                     <div className = {styles.studentDetails}>
+                        <h3>Your Details</h3>
                         <label className = {styles.field} htmlFor="first-name">
                             First name
                             <input id = "first-name" className={styles.nameField} name="firstName" type = "text" required/>
@@ -77,13 +78,13 @@ export default function Signup (){
                             Last name
                             <input id = "last-name" className={styles.nameField} name="lastName" type = "text" required/>
                         </label>
-                        <label className = {styles.field} htmlFor="student-name">
+                        <label className = {`${styles.student} ${styles.nameField}`} htmlFor="student-name">
                             Student name
-                            <input id = "student-name" className={styles.nameField} name="studentName" type = "text" required/>
+                            <input id = "student-name" className={`${styles.nameField} ${styles.student}`} name="studentName" type = "text" required/>
                         </label>
                     </div>
                     <div className = {styles.reserveContainer}>
-                        <button className={styles.reseveButton}>Reserve Now!</button>
+                        <button className={styles.reserveButton}>Reserve Now!</button>
                     </div>
                 </div>
             </div>

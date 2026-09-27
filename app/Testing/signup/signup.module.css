@@ -1,77 +1,412 @@
+/* Scope the page background and typography to the existing signup wrapper. */
+main:has(> .signUpNav) {
+    min-height: 100vh;
+    color: #17355d;
+    background: #f8f1e4;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+}
+
+.signUpNav,
+.mainSignup {
+    width: min(1180px, calc(100% - 48px));
+    margin-inline: auto;
+}
+
 .signUpNav {
-    min-height: 50px;
-    background-color:lightblue;
-    border-bottom: 1px solid black;
-    width: 70%;
-    margin-inline: auto;
-}
-.mainSignup{
-    width:70%;
-    background-color: lightcoral;
-    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    min-height: 82px;
+    border-bottom: 1px solid #17355d30;
+    font-size: 14px;
+    font-weight: 800;
 }
 
-.signupBack{
-    margin-top: 20px ;
-    margin-bottom: 20px;
+.signupBack {
+    padding-block: 28px 36px;
 }
 
-.signupContent{
-    display:flex;
-    background-color:lightcyan;
-    gap:100px;
-    align-items:flex-start;
+.signupBackButton {
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid #17355d;
+    border-radius: 4px;
+    background: transparent;
+    color: #17355d;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.signupDetails{
+.signupBackButton:hover {
+    background: #17355d;
+    color: #fffdf8;
+}
+
+/* The left column gets slightly more space; both can shrink with the page. */
+.signupContent {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(36px, 6vw, 80px);
+    align-items: start;
+    padding-bottom: 56px;
+}
+
+.signupDetails {
+    min-width: 0;
+    padding-top: 18px;
+}
+
+.courseCode {
+    display: inline-flex;
+    margin-bottom: 24px;
+    padding: 7px 10px;
+    border: 1px solid #237f7540;
+    background: #e0f3ee;
+    color: #237f75;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.signupTitle {
+    max-width: 11ch;
+    margin-bottom: 24px;
+    font-size: clamp(44px, 5.4vw, 72px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.055em;
+}
+
+.signupParagraph {
+    max-width: 44ch;
+    color: #435674;
+    font-size: 18px;
+    line-height: 1.75;
+}
+
+.doubleLine {
+    display: flex;
+    gap: 24px;
+    margin-block: 34px;
+    padding-block: 24px;
+    border-block: 1px solid #17355d40;
+}
+
+.doubleLine > div {
     flex: 1;
+    min-width: 0;
 }
 
-.signupBookCard{
-    flex:1;
+.doubleLine > div + div {
+    padding-left: 24px;
+    border-left: 1px solid #17355d30;
 }
 
-.courseCode{
-    margin-top:20px;
-    margin-bottom:20px;
-    background-color: lightgreen;
-    display:inline-flex;
+.doubleLine h3 {
+    margin-bottom: 10px;
+    color: #66758b;
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-.signupTitle{
-    font-size: 60px;
-    font-weight:800;
-    margin-bottom: 20px;
-}
-
-.signupParagraph{
-    margin-bottom: 20px;
-}
-
-.doubleLine{
-    display:flex;
-    gap:40px;
-    border-top: 1px solid #17355d;
-    border-bottom: 1px solid #17355d;
-    margin-bottom:20px;
-    margin-top:20px;
-}
-
-.doubleLine > div{
-    flex: 1;
-    padding-top:20px;
-    padding-bottom:20px;
+.doubleLine p {
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.7;
 }
 
 .signupDetails > h2 {
-    margin-bottom: 20px;
-}
-.signupDetails  > p{
-    margin-bottom:20px;
+    margin-bottom: 14px;
+    font-size: 24px;
+    line-height: 1.3;
 }
 
-.signupSmallText{
-    font-size:12px;
-    border-left: 2px solid yellow;
-    padding-left:20px;
+.signupDetails > h2 + p {
+    color: #435674;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.signupSmallText {
+    margin-top: 26px;
+    padding-left: 14px;
+    border-left: 2px solid #c63f3260;
+    color: #66758b;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.signupBookCard {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 32px;
+    border: 1px solid #17355d;
+    border-radius: 4px;
+    background: #fffdf8;
+    box-shadow: 8px 8px 0 #17355d14;
+}
+
+.signupBookCard > h3 {
+    margin-bottom: 14px;
+    color: #c63f32;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.signupBookCard > h2 {
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+}
+
+.signupBookCard > p {
+    margin-bottom: 28px;
+    color: #66758b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.selectDiv > p {
+    margin-bottom: 9px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* nameField is also used on a label, so control styling targets inputs only. */
+.selectOption,
+input.nameField {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid #bbc4ce;
+    border-radius: 9px;
+    background-color: #fffdf8;
+    color: #17355d;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.selectOption {
+    appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%2317355d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.selectOption:hover,
+input.nameField:hover {
+    border-color: #c63f32;
+}
+
+.signupTimes {
+    margin-top: 22px;
+}
+
+.signupTimes > h3 {
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.timeContainer {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.timeContainer > label {
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+}
+
+/* Keep the native radios focusable while their spans provide the pill design. */
+.timeContainer input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.timeContainer span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 8px;
+    border: 1px solid #bbc4ce;
+    border-radius: 999px;
+    background: #fffdf8;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.timeContainer label:hover input:not(:checked) + span {
+    border-color: #c63f32;
+    background: #fcf0eb;
+    color: #c63f32;
+}
+
+.timeContainer input:checked + span {
+    border-color: #c63f32;
+    background: #c63f32;
+    color: white;
+}
+
+.studentDetails {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e5dfd3;
+}
+
+.studentDetails > h3 {
+    grid-column: 1 / -1;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.field,
+.studentDetails > label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.student {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.reserveContainer {
+    margin-top: 28px;
+}
+
+.reserveButton {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 1px solid #c63f32;
+    border-radius: 999px;
+    background: #c63f32;
+    color: white;
+    font-size: 14px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.reserveButton:hover {
+    background: #ad342a;
+    border-color: #ad342a;
+}
+
+.signupBackButton:focus-visible,
+.selectOption:focus-visible,
+input.nameField:focus-visible,
+.reserveButton:focus-visible,
+.timeContainer input:focus-visible + span {
+    outline: 2px solid #17355d;
+    outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+    .signupContent {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .signupDetails {
+        padding-top: 0;
+    }
+
+    .signupTitle {
+        max-width: none;
+    }
+
+    .signupParagraph {
+        max-width: 54ch;
+    }
+}
+
+@media (max-width: 600px) {
+    .signUpNav,
+    .mainSignup {
+        width: calc(100% - 32px);
+    }
+
+    .signUpNav {
+        min-height: 72px;
+    }
+
+    .signupBack {
+        padding-block: 20px;
+    }
+
+    .signupTitle {
+        max-width: 11ch;
+    }
+
+    .signupParagraph {
+        font-size: 16px;
+    }
+
+    .signupBookCard {
+        padding: 26px 22px;
+        box-shadow: 5px 5px 0 #17355d14;
+    }
+
+    .doubleLine {
+        gap: 18px;
+    }
+
+    .doubleLine > div + div {
+        padding-left: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 380px) {
+    .signupBookCard {
+        padding-inline: 18px;
+    }
+
+    .studentDetails {
+        grid-template-columns: 1fr;
+    }
+
+    .doubleLine {
+        flex-direction: column;
+    }
+
+    .doubleLine > div + div {
+        padding-left: 0;
+        border-left: 0;
+    }
 }

@@ -97,12 +97,24 @@ export default function OpenBook({
           })}
           </div>
           <div className = {styles.bookNow}>
-            <button className = {styles.signupButton}>Book Now</button></div>
+            <button 
+              className = {styles.signupButton }
+              onClick = {
+                  ()=>{ if (offeringSelected ===null){
+                    return 
+                  }
+                  else{
+                    window.location.href =`/Testing/signup?courseId=${encodeURIComponent(courseId)}&offeringId=${encodeURIComponent(offeringSelected)}`;
+                  }
+                }}
+
+              disabled = {offeringSelected === null}
+                >Book Now</button></div>
         </div>
         <button
           type="button"
           className={styles.backButton}
-          onClick = { ()=> {onclick(); setDay("Start")}}
+          onClick = { ()=> {onclick(); setDay("Start"); setOffering(null)}}
           aria-label="Close course details"
         >
           X
