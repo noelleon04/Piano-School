@@ -1,6 +1,30 @@
+"use client";
+import { Offering, signupProp } from "../CourseBooks/CourseBook.types"
 import styles from "./signup.module.css"
+import { daysOfWeek } from "../CourseBooks/CourseBook.types";
+import { useState } from "react";
 
-export default function Signup (){
+export default function Signup ({course, offering, selectedOffer}:signupProp){
+    const dayOptions = [...new Set(offering.map((offer)=>{
+        return offer.courseId = course.courseId ? offer.dayOfWeek : "Unavailable";
+    }))]
+    const [daySelected, setDay] = useState<daysOfWeek>(selectedOffer.dayOfWeek as daysOfWeek)
+
+    const [offerOptions, setOffer] = useState<string|null>(selectedOffer.startTime)
+
+    function changeDate(time:string){
+        const [hour,minute] = time.split(":");
+        const hourNumber = Number(hour);
+
+        const hourPeriod = hourNumber >= 12 ? "PM" :"AM";
+        let displayHour = hourNumber %12;
+
+        if (displayHour === 0 ){
+            displayHour = 12;
+        }
+        return `${displayHour}:${minute} ${hourPeriod}`;
+    }
+
     return <main>
         <nav className = {styles.signUpNav}>
             <div>Logo</div>
@@ -11,22 +35,22 @@ export default function Signup (){
             </div>
             <div className = {styles.signupContent}>
                 <div className = {styles.signupDetails}>
-                    <div className = {styles.courseCode}>Music - Piano Course</div>
-                    <h1 className = {styles.signupTitle}> Full Piano Lessons</h1>
-                    <p className = {styles.signupParagraph}>individual piano instruction for students interested in developing their musical skills</p>
+                    <div className = {styles.courseCode}>{course.cover.subject}</div>
+                    <h1 className = {styles.signupTitle}>{course.cover.courseTitle}</h1>
+                    <p className = {styles.signupParagraph}>{course.courseDetail.description}</p>
                     <div className = {styles.doubleLine}>
                         <div>
                             <h3>Schedule</h3>
-                            <p>Weekly 30 min one to one lessons</p>
+                            <p>{course.courseDetail.format}</p>
                         </div>
                         <div>
                             <h3>Pricing</h3>
-                            <p>$25.00 per 30-minute lesson</p>
+                            <p>{course.courseDetail.pricing}</p>
                         </div>
                     </div>
                     <h2>About These Lessons</h2>
-                    <p> Lesons include technique, repetoire work, and optional examination preperation</p>
-                    <p className ={styles.signupSmallText}>Sample course content from the existing project. Schedule, pricing, and course details are for this design preview and remain to be confirmed.</p>
+                    <p>{course.courseDetail.details}</p>
+                    <p className ={styles.signupSmallText}>If you do not see your </p>
                 </div>
                 <div className = {styles.signupBookCard}>
                     <h3>LESSON SIGNUP</h3>
@@ -34,38 +58,36 @@ export default function Signup (){
                     <p>Choose your day and time, then add your details.</p>
                     <div className = {styles.selectDiv}>
                         <p>Lesson day</p>
-                        <select className = {styles.selectOption} name="" id="">
-                            <option>Saturday</option>
-                            <option>Sunday</option>
+                        <select 
+                        className = {styles.selectOption}
+                        value = {daySelected}
+                        onChange = {
+                            (event)=>{
+                                const day = event.target.value as daysOfWeek
+                                setDay(day)
+                            }
+                        }
+                        >
+                            {dayOptions.map((day)=>{
+                                return <option>{day}</option>
+                            })}
                         </select>
                     </div>
                     <div className = {styles.signupTimes}>
                         <h3>Start time</h3>
                         <div className = {styles.timeContainer}>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "9AM"/>
-                                <span>9:00AM</span>
-                            </label>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "930AM"/>
-                                <span>9:30AM</span>
-                            </label>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "10AM"/>
-                                <span>10:00AM</span>
-                            </label>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "1030AM"/>
-                                <span>10:30AM</span>
-                            </label>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "11AM"/>
-                                <span>11:00AM</span>
-                            </label>
-                            <label>
-                                <input type="radio" name ="signupTime" value = "1130AM"/>
-                                <span>11:30AM</span>
-                            </label>
+                            {offering.map((offer)=>{
+                                let isSelected = offerOptions === offer.startTime;
+                                if(offer.dayOfWeek == daySelected){
+                                    return <label>
+                                        <input type="radio" name = "signupTime" value = {offer.startTime} checked = {isSelected} onChange={(event)=>{
+                                            let offerTime = event.target.value;
+                                            setOffer(offerTime);
+                                        }}></input>
+                                        <span>{changeDate(offer.startTime)}</span>
+                                    </label>
+                                }
+                            })}
                         </div>
                     </div>
                     <div className = {styles.studentDetails}>
@@ -84,7 +106,7 @@ export default function Signup (){
                         </label>
                     </div>
                     <div className = {styles.reserveContainer}>
-                        <button className={styles.reserveButton}>Reserve Now!</button>
+                        <button className={styles.reserveButton} onClick = {()=>{console.log(daySelected, " " , offerOptions)}}>Reserve Now!</button>
                     </div>
                 </div>
             </div>

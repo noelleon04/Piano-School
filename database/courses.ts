@@ -45,3 +45,26 @@ export async function getCourses() : Promise<Course[]>{
     return transformedCourses;
 }
 
+export async function getCourse(courseId:string):Promise<Course>{
+    const result = await database.query<CourseRow>("SELECT * FROM courses WHERE course_id = $1", [courseId]);
+    const course = result.rows[0];
+    if (!course) {
+        throw new Error("Course not found");
+    }
+    const transformedCourse: Course = {
+        courseId: course.course_id,
+        cover: {
+            courseTitle: course.course_title,
+            symbol: course.symbol,
+            subject: course.subject,
+            theme: course.theme,
+        },
+        courseDetail: {
+            details: course.details,
+            format: course.format_summary,
+            description: course.description,
+            pricing: course.pricing_summary,
+        },
+    };
+return transformedCourse;
+}

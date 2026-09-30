@@ -41,3 +41,32 @@ export async function getOffering() :  Promise<Offering[]>{
 
     return transformedCourses;
 }
+
+export async function getCourseOffering(courseId:string): Promise<Offering[]>{
+    const result = await database.query<OfferingRow>( 
+        `SELECT offering_id,day_of_week, start_time, end_time, c.course_Id, is_visible, is_open_for_registration, capacity
+        FROM offering AS o
+        JOIN courses AS c
+	        ON o.course_id = c.id
+        JOIN timeslot AS t
+	        ON o.timeslot_id = t.timeslot_id
+        WHERE c.course_id = $1;`,[courseId]
+    );
+
+    const offeringResult = result.rows;
+    
+        const transformedCourses = offeringResult.map((offering)=>{
+        return{
+              offeringId: offering.offering_id,
+              dayOfWeek: offering.day_of_week,
+              startTime: offering.start_time,
+              endTime: offering.end_time,
+              courseId: offering.course_id,
+              isVisible: offering.is_visible,
+              isOpen: offering.is_open_for_registration,
+              capacity: offering.capacity,
+        }
+    });
+    
+    return transformedCourses;
+}

@@ -48,6 +48,12 @@ export type openBookProp = {
   onclick : ()=>void;
 }
 
+export type signupProp = {
+  course: Course;
+  offering: Offering[];
+  selectedOffer:Offering;
+}
+
 
 
 export type Offering = {
