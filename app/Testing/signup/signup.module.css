@@ -285,8 +285,17 @@ input.nameField:hover {
     font-weight: 700;
 }
 
+/* The form spans the details section and arranges its own fields. */
+.studentDetails > form {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: inherit;
+    gap: inherit;
+    min-width: 0;
+}
+
 .field,
-.studentDetails > label {
+.studentDetails > form > label {
     display: flex;
     flex-direction: column;
     gap: 9px;
@@ -300,11 +309,10 @@ input.nameField:hover {
     width: 100%;
 }
 
-.reserveContainer {
-    margin-top: 28px;
-}
-
 .reserveButton {
+    grid-column: 1 / -1;
+    /* Together with the form's 18px row gap, keep 28px above the button. */
+    margin-top: 10px;
     width: 100%;
     min-height: 48px;
     padding: 12px 18px;

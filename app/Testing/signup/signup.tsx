@@ -10,7 +10,9 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
     }))]
     const [daySelected, setDay] = useState<daysOfWeek>(selectedOffer.dayOfWeek as daysOfWeek)
 
-    const [offerOptions, setOffer] = useState<string|null>(selectedOffer.startTime)
+    const [offerOptions, setOffer] = useState<Number|null>(selectedOffer.offeringId)
+
+    const[error,setError] = useState("");
 
     function changeDate(time:string){
         const [hour,minute] = time.split(":");
@@ -77,11 +79,11 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         <h3>Start time</h3>
                         <div className = {styles.timeContainer}>
                             {offering.map((offer)=>{
-                                let isSelected = offerOptions === offer.startTime;
+                                let isSelected = offerOptions === offer.offeringId;
                                 if(offer.dayOfWeek == daySelected){
                                     return <label>
-                                        <input type="radio" name = "signupTime" value = {offer.startTime} checked = {isSelected} onChange={(event)=>{
-                                            let offerTime = event.target.value;
+                                        <input type="radio" name = "signupTime" value = {offer.offeringId} checked = {isSelected} onChange={(event)=>{
+                                            let offerTime = Number(event.target.value);
                                             setOffer(offerTime);
                                         }}></input>
                                         <span>{changeDate(offer.startTime)}</span>
@@ -92,21 +94,50 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                     </div>
                     <div className = {styles.studentDetails}>
                         <h3>Your Details</h3>
+                        {error && <p role="alert">{error}</p>}    
+                        <form onSubmit = {async (event)=>{
+                            event.preventDefault();
+
+                            const formData = new FormData(event.currentTarget);
+                            formData.set("offeringId", String(offerOptions))
+                            const response = await fetch("/api/registration", {method: "POST", body: formData,});
+                            
+
+                            const data = await response.json();
+
+                            if(!response.ok){
+                                setError(data.message);
+                            }else{
+                                console.log(data.message);
+                            }
+                        }} >
                         <label className = {styles.field} htmlFor="first-name">
-                            First name
+                            Parent first name
                             <input id = "first-name" className={styles.nameField} name="firstName" type = "text" required/>
                         </label>
                         <label className = {styles.field} htmlFor="last-name">
-                            Last name
+                            Parent last name
                             <input id = "last-name" className={styles.nameField} name="lastName" type = "text" required/>
                         </label>
-                        <label className = {`${styles.student} ${styles.nameField}`} htmlFor="student-name">
-                            Student name
-                            <input id = "student-name" className={`${styles.nameField} ${styles.student}`} name="studentName" type = "text" required/>
+                        <label className = {styles.field} htmlFor="email">
+                            Email
+                            <input id = "email" className={styles.nameField} name="email" type = "email" autoComplete="email" required/>
                         </label>
-                    </div>
-                    <div className = {styles.reserveContainer}>
-                        <button className={styles.reserveButton} onClick = {()=>{console.log(daySelected, " " , offerOptions)}}>Reserve Now!</button>
+                        <label className = {styles.field} htmlFor="phone">
+                            Phone number
+                            <input id = "phone" className={styles.nameField} name="phone" type = "tel" autoComplete="tel" required/>
+                        </label>
+                        <label className = {`${styles.student} ${styles.nameField}`} htmlFor="student-first-name">
+                            Student first name
+                            <input id = "student-first-name" className={`${styles.nameField} ${styles.student}`} name="studentFirstName" type = "text" required/>
+                        </label>
+                        <label className = {`${styles.student} ${styles.nameField}`} htmlFor="student-last-name">
+                            Student last name
+                            <input id = "student-last-name" className={`${styles.nameField} ${styles.student}`} name="studentLastName" type = "text" required/>
+                        </label>
+                            <button className={styles.reserveButton} type = "submit">Reserve Now!</button>
+
+                        </form>
                     </div>
                 </div>
             </div>
