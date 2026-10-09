@@ -14,6 +14,11 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
 
     const[error,setError] = useState("");
 
+    const [isSubmitting, setSubmition] = useState<boolean>(false);
+    const [isSubmitted, setSubmitted] = useState<boolean> (false);
+
+    
+
     function changeDate(time:string){
         const [hour,minute] = time.split(":");
         const hourNumber = Number(hour);
@@ -93,22 +98,52 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         </div>
                     </div>
                     <div className = {styles.studentDetails}>
-                        <h3>Your Details</h3>
-                        {error && <p role="alert">{error}</p>}    
-                        <form onSubmit = {async (event)=>{
+
+                        {isSubmitted ? (
+                            <p className={styles.successMessage}>Your registration request has been received!, We will get in touch with you soon</p>
+
+                        ) :(
+                            <>
+                            <h3>Your Details</h3>
+                                {error && <p className={styles.errorMessage} role="alert">{error}</p>}
+                                <form onSubmit = {async (event)=>{
                             event.preventDefault();
+
+                            if(isSubmitting) return;
+
+                            setSubmition (true);
+
+
 
                             const formData = new FormData(event.currentTarget);
                             formData.set("offeringId", String(offerOptions))
-                            const response = await fetch("/api/registration", {method: "POST", body: formData,});
-                            
 
-                            const data = await response.json();
 
-                            if(!response.ok){
+
+                            try{
+                                setError("");
+                                let submissionsId = sessionStorage.getItem("pianoSignupId");
+                                
+                                if(submissionsId === null){
+                                    submissionsId = crypto.randomUUID();
+                                    sessionStorage.setItem("pianoSignupId", submissionsId);
+                                }
+
+                                formData.set("submissionId",submissionsId);
+
+                                const response = await fetch("/api/registration", {method: "POST", body: formData,});
+                                const data = await response.json();
+                                 if(!response.ok){
                                 setError(data.message);
-                            }else{
-                                console.log(data.message);
+                                    }else{
+                                        setSubmitted(true);
+                                        console.log(data.message);
+                                    }
+                            }catch(error){
+                                console.log(error);
+                                setError("Unable to complete your request. Please try again.");
+                            }finally{
+                                setSubmition(false);
                             }
                         }} >
                         <label className = {styles.field} htmlFor="first-name">
@@ -135,9 +170,12 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                             Student last name
                             <input id = "student-last-name" className={`${styles.nameField} ${styles.student}`} name="studentLastName" type = "text" required/>
                         </label>
-                            <button className={styles.reserveButton} type = "submit">Reserve Now!</button>
+                            <button className={styles.reserveButton} type = "submit" disabled = {isSubmitting} >{isSubmitting ? "reserving...": "reserve Now!" }</button>
 
                         </form>
+                        </>
+                        )
+                        }
                     </div>
                 </div>
             </div>

@@ -1,6 +1,8 @@
 import { checkOfferingAvailability } from "@/database/checking";
 import { addCustomer } from "@/database/customer";
 import { addStudent } from "@/database/student";
+import { addRegistration } from "@/database/registration";
+import { checkUniqueId } from "@/database/checking";
 
 export async function POST(request: Request) {
     const formData = await request.formData();
@@ -11,6 +13,7 @@ export async function POST(request: Request) {
     const studentFirstName = formData.get("studentFirstName");
     const studentLastName = formData.get("studentLastName");
     const offeringId = formData.get("offeringId");
+    const uniqueId = formData.get("submissionId")
 
 
     if (typeof firstName !== "string" || firstName.trim() === "" || firstName.trim().length > 100) {
@@ -72,26 +75,44 @@ export async function POST(request: Request) {
         )
     }
 
-    const isAvailable = await checkOfferingAvailability(offeringAsNumber);
+        if(typeof uniqueId !== "string"){
+        return Response.json(
+            {message: "missing or invalid submission ID."},
+            {status: 400}
+        )
+    }
 
-    if(!isAvailable){
+    const isFound = await checkUniqueId(uniqueId);
+
+    if(!isFound){
+        const isAvailable = await checkOfferingAvailability(offeringAsNumber);
+
+        if(!isAvailable){
         return Response.json(
             {message: "Sorry, this timeslot has already been booked, please choose another option or contact customer support"},
             {status: 400}
         )
+        }
+        try{
+            const customerId = await addCustomer(firstName,lastName,email,telephone);
+            const studentId = await addStudent(customerId,studentFirstName, studentLastName );
+            await addRegistration(studentId,Number(offeringId), uniqueId);
+        }
+        catch (error){
+            return Response.json(
+                {message: "Sorry, something went wrong with adding you to the system, please contact customer support"},
+                {status: 400}
+            )
+        }
+    }else{
+        
     }
 
+    
 
-    try{
-        const customerId = await addCustomer(firstName,lastName,email,telephone);
-        const studentId = await addStudent(customerId,studentFirstName, studentLastName );
-    }
-    catch (error){
-        return Response.json(
-            {message: "Sorry, something went wrong with adding you to the system, please contact customer support"},
-            {status: 400}
-        )
-    }
+
+
+    
 
  
     return Response.json({ message: "Validation passed. Your Registration has been saved" });

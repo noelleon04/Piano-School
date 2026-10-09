@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS registration(
     UNIQUE(student_id,offering_id),
     status VARCHAR (10) NOT NULL
         CHECK(status IN('confirmed', 'pending','cancelled','ended')),
-    start_date DATE NOT NULL,
+    start_date DATE,
     end_date DATE,
     CHECK(end_date IS NULL OR end_date >= start_date)
 );

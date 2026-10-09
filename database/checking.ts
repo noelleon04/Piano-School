@@ -15,3 +15,12 @@ export async function checkOfferingAvailability(offeringId : Number){
 
    return Availability;
 }
+
+export async function checkUniqueId(uniqueId: string){
+    const result = await database.query(
+         `SELECT count(*) > 0 As found
+         FROM registration
+         WHERE submission_id = $1; `,[uniqueId])
+    const idFound = result.rows[0].found;
+    return idFound;
+}

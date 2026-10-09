@@ -285,6 +285,35 @@ input.nameField:hover {
     font-weight: 700;
 }
 
+.errorMessage,
+.successMessage {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px solid;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.7;
+    text-align: center;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+}
+
+.errorMessage {
+    border-color: #c63f3240;
+    background: #fcf0eb;
+    color: #ad342a;
+}
+
+.successMessage {
+    border-color: #237f7540;
+    background: #e0f3ee;
+    color: #1a625a;
+}
+
 /* The form spans the details section and arranges its own fields. */
 .studentDetails > form {
     display: grid;
