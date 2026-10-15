@@ -1,8 +1,9 @@
 import "server-only"
 import { database } from "./connection"
+import { PoolClient } from "pg";
 
-export async function addCustomer(custFirstName:string, custLastName:string, custEmail:string, custTelephone :string){
-    const result = await database.query(
+export async function addCustomer(client:PoolClient, custFirstName:string, custLastName:string, custEmail:string, custTelephone :string){
+    const result = await client.query(
         `INSERT INTO customer(parent_first_name, parent_last_name, email, telephone)
         VALUES ($1,$2,$3,$4)
         RETURNING customer_id;

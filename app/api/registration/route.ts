@@ -2,7 +2,9 @@ import { checkOfferingAvailability } from "@/database/checking";
 import { addCustomer } from "@/database/customer";
 import { addStudent } from "@/database/student";
 import { addRegistration } from "@/database/registration";
-import { checkUniqueId } from "@/database/checking";
+import { findUniqueId } from "@/database/checking";
+import { database } from "@/database/connection";
+
 
 export async function POST(request: Request) {
     const formData = await request.formData();
@@ -13,7 +15,9 @@ export async function POST(request: Request) {
     const studentFirstName = formData.get("studentFirstName");
     const studentLastName = formData.get("studentLastName");
     const offeringId = formData.get("offeringId");
-    const uniqueId = formData.get("submissionId")
+    const uniqueId = formData.get("submissionId");
+
+
 
 
     if (typeof firstName !== "string" || firstName.trim() === "" || firstName.trim().length > 100) {
@@ -81,39 +85,65 @@ export async function POST(request: Request) {
             {status: 400}
         )
     }
+    
+    const client = await database.connect();
 
-    const isFound = await checkUniqueId(uniqueId);
 
-    if(!isFound){
-        const isAvailable = await checkOfferingAvailability(offeringAsNumber);
+    try{
 
-        if(!isAvailable){
-        return Response.json(
-            {message: "Sorry, this timeslot has already been booked, please choose another option or contact customer support"},
-            {status: 400}
-        )
+        const isFound = await findUniqueId(client,uniqueId);
+            if(isFound == null){
+                const isAvailable = await checkOfferingAvailability(client,offeringAsNumber);
+
+                if(!isAvailable){
+                    return Response.json(
+                        {message: "Sorry, this timeslot has already been booked, please choose another option or contact customer support"},
+                        {status: 400}
+                    )
+                }
+            
+            await client.query("BEGIN");
+
+            const customerId = await addCustomer(client,firstName,lastName,email,telephone);
+            const studentId = await addStudent(client,customerId,studentFirstName, studentLastName );
+            await addRegistration(client, studentId,Number(offeringId), uniqueId);
+
+            await client.query("COMMIT");
+
+  
+        }else{
+            const detailsMatch =
+            isFound.parent_first_name === firstName &&
+            isFound.parent_last_name === lastName &&
+            isFound.email === email &&
+            isFound.telephone === telephone &&
+            isFound.student_first_name === studentFirstName &&
+            isFound.student_last_name === studentLastName &&
+            isFound.offering_id === offeringAsNumber;
+
+            if(detailsMatch){
+                return Response.json(
+                    {message: "Your registration request has already been received."},
+                );
+            }
+            
+            return Response.json(
+                {
+                    message: "This submission ID was already used with different details."
+                },{ status: 409 });
         }
-        try{
-            const customerId = await addCustomer(firstName,lastName,email,telephone);
-            const studentId = await addStudent(customerId,studentFirstName, studentLastName );
-            await addRegistration(studentId,Number(offeringId), uniqueId);
-        }
-        catch (error){
+
+        }catch(error){
+            await client.query("ROLLBACK");
             return Response.json(
                 {message: "Sorry, something went wrong with adding you to the system, please contact customer support"},
                 {status: 400}
             )
+        }finally{
+            client.release();
         }
-    }else{
+
         
-    }
-
     
-
-
-
-    
-
- 
     return Response.json({ message: "Validation passed. Your Registration has been saved" });
 }
