@@ -39,3 +39,15 @@ export async function findUniqueId(client:PoolClient,uniqueId: string) : Promise
 
     return result.rows[0]?? null;
 }
+
+export async function lockUniqueId(client:PoolClient,offeringId: number){
+    const result = await client.query(
+        `SELECT *
+        FROM offering AS o 
+        WHERE o.offering_id  = $1
+        FOR UPDATE; `, [offeringId]
+    )
+
+    return result.rows[0] ?? null;
+
+}

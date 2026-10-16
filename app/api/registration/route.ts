@@ -4,6 +4,7 @@ import { addStudent } from "@/database/student";
 import { addRegistration } from "@/database/registration";
 import { findUniqueId } from "@/database/checking";
 import { database } from "@/database/connection";
+import { lockUniqueId } from "@/database/checking";
 
 
 export async function POST(request: Request) {
@@ -88,21 +89,34 @@ export async function POST(request: Request) {
     
     const client = await database.connect();
 
-
     try{
+
+        await client.query("BEGIN")
+
+        const lockedOffering = await lockUniqueId(client, offeringAsNumber);
+
+        if(lockedOffering == null){
+            await client.query("ROLLBACK");
+            return Response.json(
+                    {message: "You selected a time slot that was not valid , please try again "},
+                    {status: 400}
+            )
+
+        }
 
         const isFound = await findUniqueId(client,uniqueId);
             if(isFound == null){
                 const isAvailable = await checkOfferingAvailability(client,offeringAsNumber);
 
                 if(!isAvailable){
+                    await client.query("ROLLBACK");
                     return Response.json(
                         {message: "Sorry, this timeslot has already been booked, please choose another option or contact customer support"},
                         {status: 400}
                     )
                 }
             
-            await client.query("BEGIN");
+
 
             const customerId = await addCustomer(client,firstName,lastName,email,telephone);
             const studentId = await addStudent(client,customerId,studentFirstName, studentLastName );
@@ -122,11 +136,12 @@ export async function POST(request: Request) {
             isFound.offering_id === offeringAsNumber;
 
             if(detailsMatch){
+                await client.query("ROLLBACK");
                 return Response.json(
                     {message: "Your registration request has already been received."},
                 );
             }
-            
+            await client.query("ROLLBACK");
             return Response.json(
                 {
                     message: "This submission ID was already used with different details."

@@ -1,5 +1,4 @@
 import "server-only"
-import { database } from "./connection";
 import { PoolClient } from "pg";
 
 
