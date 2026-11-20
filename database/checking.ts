@@ -14,17 +14,17 @@ type ExistingRegistration = {
 
 export async function checkOfferingAvailability(client: PoolClient, offeringId : number){
     const result = await client.query(
-        `SELECT o.capacity > 
+        `SELECT (o.is_open_for_registration AND o.capacity > 
             (SELECT COUNT (*) AS occupied_seats
 	            FROM registration AS r
 	            WHERE r.offering_id = o.offering_id
 		            AND r.status IN('pending', 'confirmed')
-	        ) As Availability
+	        ) 
+                    )As Availability
         fROM offering AS o
         WHERE offering_id = $1; `, [Number(offeringId)])
-   const Availability = result.rows[0].availability;
-
-   return Availability;
+        const availability = result.rows[0]?.availability ?? false;
+        return availability;
 }
 
 export async function findUniqueId(client:PoolClient,uniqueId: string) : Promise<ExistingRegistration |null>{

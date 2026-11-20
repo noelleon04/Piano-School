@@ -17,12 +17,23 @@ interface OfferingRow extends QueryResultRow{
 
 export async function getOffering() :  Promise<Offering[]>{
     const results = await database.query<OfferingRow>(
-        `SELECT offering_id, day_of_week, start_time,end_time, c.course_id, is_visible, is_open_for_registration, capacity
-        FROM offering AS o
-        JOIN courses AS c
-            ON o.course_id = c.id
-        JOIN timeslot AS t
-            ON o.timeslot_id = t.timeslot_id;`)
+    `SELECT offering_id, day_of_week, start_time, end_time,
+            c.course_id, is_visible, is_open_for_registration, capacity
+     FROM offering AS o
+     JOIN courses AS c
+         ON o.course_id = c.id
+     JOIN timeslot AS t
+         ON o.timeslot_id = t.timeslot_id
+     WHERE (
+         o.is_open_for_registration
+         AND o.capacity > (
+             SELECT COUNT(*)
+             FROM registration AS r
+             WHERE r.offering_id = o.offering_id
+               AND r.status IN ('pending', 'confirmed')
+         )
+     );`
+);
     
     const offeringResults = results.rows;
 
@@ -50,7 +61,13 @@ export async function getCourseOffering(courseId:string): Promise<Offering[]>{
 	        ON o.course_id = c.id
         JOIN timeslot AS t
 	        ON o.timeslot_id = t.timeslot_id
-        WHERE c.course_id = $1;`,[courseId]
+        WHERE c.course_id = $1 AND (o.is_open_for_registration AND o.capacity > 
+            (SELECT COUNT (*) AS occupied_seats
+	            FROM registration AS r
+	            WHERE r.offering_id = o.offering_id
+		            AND r.status IN('pending', 'confirmed')
+                    )
+	        ) ;`,[courseId]
     );
 
     const offeringResult = result.rows;

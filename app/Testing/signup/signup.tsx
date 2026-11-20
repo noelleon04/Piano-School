@@ -2,7 +2,7 @@
 import { Offering, signupProp } from "../CourseBooks/CourseBook.types"
 import styles from "./signup.module.css"
 import { daysOfWeek } from "../CourseBooks/CourseBook.types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Signup ({course, offering, selectedOffer}:signupProp){
     const dayOptions = [...new Set(offering.map((offer)=>{
@@ -16,6 +16,8 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
 
     const [isSubmitting, setSubmition] = useState<boolean>(false);
     const [isSubmitted, setSubmitted] = useState<boolean> (false);
+    const [hasCheckedSubmission, setHasCheckedSubmission] = useState<boolean>(false);
+
 
     
 
@@ -31,6 +33,19 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
         }
         return `${displayHour}:${minute} ${hourPeriod}`;
     }
+
+    useEffect(()=>{
+        let submitted = sessionStorage.getItem("submissionSent");
+        setHasCheckedSubmission(true);
+        if(submitted){
+            setSubmitted(true)
+        }
+    },[]);
+
+    if(!hasCheckedSubmission){
+        return <p role="status">Checking registration status...</p>;
+
+    }else{
 
     return <main>
         <nav className = {styles.signUpNav}>
@@ -72,6 +87,7 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                             (event)=>{
                                 const day = event.target.value as daysOfWeek
                                 setDay(day)
+                                setOffer(null)
                             }
                         }
                         >
@@ -98,10 +114,20 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         </div>
                     </div>
                     <div className = {styles.studentDetails}>
-
                         {isSubmitted ? (
+                            <>
                             <p className={styles.successMessage}>Your registration request has been received!, We will get in touch with you soon</p>
-
+                            <button
+                            onClick = {
+                                ()=>{
+                                    sessionStorage.removeItem("submissionSent");
+                                    sessionStorage.removeItem("pianoSignupId");
+                                    setSubmitted(false);
+                                }
+                            } 
+                            
+                            >Signup another student</button>
+                            </>
                         ) :(
                             <>
                             <h3>Your Details</h3>
@@ -137,6 +163,7 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                                 setError(data.message);
                                     }else{
                                         setSubmitted(true);
+                                        sessionStorage.setItem("submissionSent","true");
                                         console.log(data.message);
                                     }
                             }catch(error){
@@ -182,6 +209,7 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
         </div>
     </main>
 
+}
 }
 
 
