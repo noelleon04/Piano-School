@@ -1,5 +1,4 @@
 import "server-only"
-import { database } from "./connection"
 import { PoolClient } from "pg";
 
 export async function addCustomer(client:PoolClient, custFirstName:string, custLastName:string, custEmail:string, custTelephone :string){

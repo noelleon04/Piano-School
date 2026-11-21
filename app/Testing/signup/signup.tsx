@@ -1,22 +1,23 @@
 "use client";
-import { Offering, signupProp } from "../CourseBooks/CourseBook.types"
+import { signupProp } from "../CourseBooks/CourseBook.types"
 import styles from "./signup.module.css"
 import { daysOfWeek } from "../CourseBooks/CourseBook.types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Signup ({course, offering, selectedOffer}:signupProp){
+    const router = useRouter();
     const dayOptions = [...new Set(offering.map((offer)=>{
-        return offer.courseId = course.courseId ? offer.dayOfWeek : "Unavailable";
+        return offer.courseId === course.courseId ? offer.dayOfWeek : "Unavailable";
     }))]
     const [daySelected, setDay] = useState<daysOfWeek>(selectedOffer.dayOfWeek as daysOfWeek)
 
-    const [offerOptions, setOffer] = useState<Number|null>(selectedOffer.offeringId)
+    const [offerOptions, setOffer] = useState<number|null>(selectedOffer.offeringId)
 
     const[error,setError] = useState("");
 
     const [isSubmitting, setSubmition] = useState<boolean>(false);
-    const [isSubmitted, setSubmitted] = useState<boolean> (false);
-    const [hasCheckedSubmission, setHasCheckedSubmission] = useState<boolean>(false);
 
 
     
@@ -34,26 +35,13 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
         return `${displayHour}:${minute} ${hourPeriod}`;
     }
 
-    useEffect(()=>{
-        let submitted = sessionStorage.getItem("submissionSent");
-        setHasCheckedSubmission(true);
-        if(submitted){
-            setSubmitted(true)
-        }
-    },[]);
-
-    if(!hasCheckedSubmission){
-        return <p role="status">Checking registration status...</p>;
-
-    }else{
-
     return <main>
         <nav className = {styles.signUpNav}>
             <div>Logo</div>
         </nav>
         <div className = {styles.mainSignup}>
             <div className = {styles.signupBack}>
-                <button className = {styles.signupBackButton}>Back to Courses</button>
+                <Link href="/Testing/CourseBooks" className = {styles.signupBackButton}>Back to Courses</Link>
             </div>
             <div className = {styles.signupContent}>
                 <div className = {styles.signupDetails}>
@@ -92,7 +80,7 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         }
                         >
                             {dayOptions.map((day)=>{
-                                return <option>{day}</option>
+                                return <option key={day}>{day}</option>
                             })}
                         </select>
                     </div>
@@ -100,11 +88,11 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         <h3>Start time</h3>
                         <div className = {styles.timeContainer}>
                             {offering.map((offer)=>{
-                                let isSelected = offerOptions === offer.offeringId;
+                                const isSelected = offerOptions === offer.offeringId;
                                 if(offer.dayOfWeek == daySelected){
-                                    return <label>
+                                    return <label key={offer.offeringId}>
                                         <input type="radio" name = "signupTime" value = {offer.offeringId} checked = {isSelected} onChange={(event)=>{
-                                            let offerTime = Number(event.target.value);
+                                            const offerTime = Number(event.target.value);
                                             setOffer(offerTime);
                                         }}></input>
                                         <span>{changeDate(offer.startTime)}</span>
@@ -114,26 +102,15 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                         </div>
                     </div>
                     <div className = {styles.studentDetails}>
-                        {isSubmitted ? (
-                            <>
-                            <p className={styles.successMessage}>Your registration request has been received!, We will get in touch with you soon</p>
-                            <button
-                            onClick = {
-                                ()=>{
-                                    sessionStorage.removeItem("submissionSent");
-                                    sessionStorage.removeItem("pianoSignupId");
-                                    setSubmitted(false);
-                                }
-                            } 
-                            
-                            >Signup another student</button>
-                            </>
-                        ) :(
-                            <>
                             <h3>Your Details</h3>
                                 {error && <p className={styles.errorMessage} role="alert">{error}</p>}
                                 <form onSubmit = {async (event)=>{
                             event.preventDefault();
+
+                            if (offerOptions === null) {
+                                setError("Please select a class time.");
+                                return;
+                            }
 
                             if(isSubmitting) return;
 
@@ -159,13 +136,10 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
 
                                 const response = await fetch("/api/registration", {method: "POST", body: formData,});
                                 const data = await response.json();
-                                 if(!response.ok){
-                                setError(data.message);
-                                    }else{
-                                        setSubmitted(true);
-                                        sessionStorage.setItem("submissionSent","true");
-                                        console.log(data.message);
-                                    }
+                                 if (!response.ok) {setError(data.message);
+                                 } else {
+                                    router.replace("/Testing/signup/confirmation");
+                                }
                             }catch(error){
                                 console.log(error);
                                 setError("Unable to complete your request. Please try again.");
@@ -200,9 +174,6 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
                             <button className={styles.reserveButton} type = "submit" disabled = {isSubmitting} >{isSubmitting ? "reserving...": "reserve Now!" }</button>
 
                         </form>
-                        </>
-                        )
-                        }
                     </div>
                 </div>
             </div>
@@ -210,6 +181,6 @@ export default function Signup ({course, offering, selectedOffer}:signupProp){
     </main>
 
 }
-}
+
 
 

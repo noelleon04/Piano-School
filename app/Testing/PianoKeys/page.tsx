@@ -50,7 +50,7 @@ export default function PianoExplorer(){
                             </button>
                         })}
                         {blackKeys.map((blackKey) =>{
-                            return <div className = {`${styles.blackKeys} ${styles[blackKey]}`}></div>
+                            return <div key={blackKey} className = {`${styles.blackKeys} ${styles[blackKey]}`}></div>
                         })}
                     </div>
                 </div>

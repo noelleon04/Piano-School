@@ -1,7 +1,7 @@
 import type { openBookProp } from "./CourseBook.types";
 import styles from "./CourseBook.module.css";
 import { Inter } from "next/font/google";
-import { daysOfWeek, Offering } from "./CourseBook.types";
+import { daysOfWeek } from "./CourseBook.types";
 import { useState } from "react";
 
 
@@ -69,12 +69,13 @@ export default function OpenBook({
             value = {daySelected}
           onChange = {(event) => {
               const day = event.target.value as daysOfWeek;
+              setOffering(null);
               setDay (day)
             }}>
               <option>Select a day</option>
               {dayOptions.map((day)=>{
                 return (
-                  <option>{day}</option>
+                  <option key={day}>{day}</option>
                 )
               })}
           </select>
@@ -101,14 +102,12 @@ export default function OpenBook({
               className = {styles.signupButton }
               onClick = {
                   ()=>{ if (offeringSelected ===null){
-                    return 
+                    window.alert("Please select a class time") 
                   }
                   else{
                     window.location.href =`/Testing/signup?courseId=${encodeURIComponent(courseId)}&offeringId=${encodeURIComponent(offeringSelected)}`;
                   }
                 }}
-
-              disabled = {offeringSelected === null}
                 >Book Now</button></div>
         </div>
         <button

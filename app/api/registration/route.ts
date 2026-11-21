@@ -148,7 +148,7 @@ export async function POST(request: Request) {
                 },{ status: 409 });
         }
 
-        }catch(error){
+        }catch{
             await client.query("ROLLBACK");
             return Response.json(
                 {message: "Sorry, something went wrong with adding you to the system, please contact customer support"},

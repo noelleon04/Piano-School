@@ -1,0 +1,81 @@
+.page {
+  min-height: 100vh;
+  background: #f8f1e4;
+  color: #17355d;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+.content {
+  width: min(1180px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(36px, 6vw, 80px);
+  padding-block: clamp(48px, 8vw, 100px) 56px;
+}
+
+.introduction h1 {
+  max-width: 12ch;
+  font-size: clamp(44px, 5.4vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -.055em;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.introduction > p { max-width: 42ch; font-size: 18px; line-height: 1.75; color: #435674; }
+.note { border-top: 1px solid #17355d40; margin-top: 34px; padding-top: 24px; }
+.note h2 { font-size: 20px; margin-bottom: 10px; }
+.note p { max-width: 44ch; color: #435674; line-height: 1.75; }
+
+.card {
+  min-width: 0;
+  padding: clamp(26px, 4vw, 44px);
+  border: 1px solid #17355d;
+  border-radius: 4px;
+  background: #fffdf8;
+  box-shadow: 8px 8px 0 #17355d14;
+}
+
+.receiptHeading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.check {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e0f3ee;
+  color: #1a625a;
+}
+
+.cardLabel { color: #ad342a; font-size: 14px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.card h2 { font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.035em; line-height: 1.15; }
+.description, .explanation { color: #435674; line-height: 1.75; }
+.status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-block: 1px solid #17355d25; padding-block: 22px; margin-block: 28px 20px; }
+.status strong { color: #08743b; font-weight: 800; }
+.explanation { margin-bottom: 28px; }
+.button { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 18px; border-radius: 999px; background: #c63f32; color: white; font-weight: 750; text-align: center; }
+.button:hover { background: #ad342a; }
+.page a:focus-visible { outline: 2px solid #17355d; outline-offset: 4px; }
+
+@media (max-width: 800px) {
+  .content { grid-template-columns: 1fr; gap: 36px; }
+  .introduction h1 { max-width: 15ch; }
+}
+
+@media (max-width: 480px) {
+  .content { width: calc(100% - 32px); }
+  .card { box-shadow: 5px 5px 0 #17355d14; }
+}

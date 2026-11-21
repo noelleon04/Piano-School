@@ -12,7 +12,7 @@ export default async function DatabaseTestPage() {
             <ul>
                 {courses.map((courseId)=>{
                     return (
-                    <li>{courseId.cover.courseTitle}</li>
+                    <li key={courseId.courseId}>{courseId.cover.courseTitle}</li>
                 )
                 })}
             </ul>

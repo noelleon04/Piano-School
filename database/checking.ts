@@ -1,5 +1,5 @@
 import "server-only"
-import { Client, PoolClient } from "pg";
+import { PoolClient } from "pg";
 
 type ExistingRegistration = {
     registration_id: number;

@@ -7,7 +7,6 @@ import OpenBook from "./openBook";
 import type { CourseId } from "./CourseBook.types";
 import styles from "./CourseBook.module.css";
 import { CourseProp } from "./CourseBook.types";
-import { Offering } from "./CourseBook.types";
 
 
 export default function CourseBooksPage({Courses, Offerings}:CourseProp) {
