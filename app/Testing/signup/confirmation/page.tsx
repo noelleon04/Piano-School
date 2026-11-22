@@ -11,7 +11,7 @@ export default function ConfirmationPage() {
           <p>Thank you for taking the next step. Your registration request has been received.</p>
           <div className={styles.note}>
             <h2>What happens next?</h2>
-            <p>Your request is awaiting review. Your place in the class is not yet confirmed.</p>
+            <p>Submitting a registration request does not confirm a place in the class.</p>
           </div>
         </section>
 
@@ -27,8 +27,7 @@ export default function ConfirmationPage() {
           </div>
           <p className={styles.description}>Thank you for your interest in joining a class.</p>
           <div className={styles.status}>
-            <span>Current status</span>
-            <strong>Awaiting review</strong>
+            <span>Submitted requests are reviewed before a place is confirmed.</span>
           </div>
           <p className={styles.explanation}>This acknowledges your request. Class confirmation is a separate step.</p>
           <Link className={styles.button} href="/Testing/CourseBooks" onClick={()=>{

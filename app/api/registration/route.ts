@@ -120,7 +120,7 @@ export async function POST(request: Request) {
 
             const customerId = await addCustomer(client,firstName,lastName,email,telephone);
             const studentId = await addStudent(client,customerId,studentFirstName, studentLastName );
-            await addRegistration(client, studentId,Number(offeringId), uniqueId);
+            const registrationId = await addRegistration(client, studentId,Number(offeringId), uniqueId);
 
             await client.query("COMMIT");
 
