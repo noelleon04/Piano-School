@@ -5,6 +5,7 @@ import { addRegistration } from "@/database/registration";
 import { findUniqueId } from "@/database/checking";
 import { database } from "@/database/connection";
 import { lockUniqueId } from "@/database/checking";
+import { getRegistrationSession } from "@/database/lib/registrationReceipt";
 
 
 export async function POST(request: Request) {
@@ -86,7 +87,9 @@ export async function POST(request: Request) {
             {status: 400}
         )
     }
-    
+
+    const session = await getRegistrationSession();
+   
     const client = await database.connect();
 
     try{
@@ -120,7 +123,7 @@ export async function POST(request: Request) {
 
             const customerId = await addCustomer(client,firstName,lastName,email,telephone);
             const studentId = await addStudent(client,customerId,studentFirstName, studentLastName );
-            const registrationId = await addRegistration(client, studentId,Number(offeringId), uniqueId);
+            await addRegistration(client, studentId, offeringAsNumber, uniqueId);
 
             await client.query("COMMIT");
 
@@ -134,18 +137,14 @@ export async function POST(request: Request) {
             isFound.student_first_name === studentFirstName &&
             isFound.student_last_name === studentLastName &&
             isFound.offering_id === offeringAsNumber;
+            await client.query("ROLLBACK");
 
-            if(detailsMatch){
-                await client.query("ROLLBACK");
+            if (!detailsMatch) {
                 return Response.json(
-                    {message: "Your registration request has already been received."},
+                    { message: "This submission ID was already used with different details." },
+                    { status: 409 }
                 );
             }
-            await client.query("ROLLBACK");
-            return Response.json(
-                {
-                    message: "This submission ID was already used with different details."
-                },{ status: 409 });
         }
 
         }catch{
@@ -158,7 +157,19 @@ export async function POST(request: Request) {
             client.release();
         }
 
-        
-    
-    return Response.json({ message: "Validation passed. Your Registration has been saved" });
-}
+        try {
+            session.registrationComplete = true;
+            await session.save();
+        } catch {
+            return Response.json(
+                {
+                    message:
+                    "Your registration was received, but confirmation could not be opened. Please retry the same submission.",
+                },
+                { status: 500 }
+            );
+        }
+        return Response.json({
+            message: "Your registration request has been received.",
+        });
+    }

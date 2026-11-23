@@ -1,8 +1,16 @@
-"use client";
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getRegistrationSession } from "@/database/lib/registrationReceipt";
+import BackToCoursesLink from "./backToCoursesLink";
 import styles from "./confirmation.module.css";
 
-export default function ConfirmationPage() {
+
+export default async function ConfirmationPage() {
+  
+  const session = await getRegistrationSession();
+
+  if(session.registrationComplete !== true){
+    redirect("/Testing/CourseBooks");
+  }
   return (
     <main className={styles.page}>
       <div className={styles.content}>
@@ -30,9 +38,7 @@ export default function ConfirmationPage() {
             <span>Submitted requests are reviewed before a place is confirmed.</span>
           </div>
           <p className={styles.explanation}>This acknowledges your request. Class confirmation is a separate step.</p>
-          <Link className={styles.button} href="/Testing/CourseBooks" onClick={()=>{
-            sessionStorage.removeItem("pianoSignupId");
-          }}>Back to Courses</Link>
+          <BackToCoursesLink />
         </section>
       </div>
     </main>
