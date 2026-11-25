@@ -1,0 +1,43 @@
+.cardContainer {
+    display:flex;
+    gap: 24px;
+    padding: 16px 20px;
+}
+
+.studentInfo {
+    display:flex;
+    flex-direction: column;
+    gap:35px;
+    flex: 1;
+}
+
+.studentDiv{
+    display:flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.buttonDiv{
+    flex:2;
+}
+
+.studentTitle{
+    font-size:12px;
+}
+
+.adminCardTitle{
+    font-weight: bold;
+}
+
+.courseName {
+    font-size:12px;
+}
+
+.requestedClass {
+    flex: 0.5;
+}
+
+.contactInfo {
+    flex: 1;
+    background-color: aqua;
+}
