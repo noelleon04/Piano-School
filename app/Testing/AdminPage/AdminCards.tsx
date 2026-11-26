@@ -28,16 +28,20 @@ export default function adminCards(    {
                         <p className ={styles.courseName}>{courseName}</p>
                     </div>
                     <div className = {styles.buttonDiv}>
-                        <button>Confirm</button>
-                        <button>Reject</button>
+                        <button className = {styles.confirmBtn}>Confirm</button>
+                        <button className = {styles.rejectBtn}>Cancel</button>
                     </div>
                 </div>
                 <div className = {styles.requestedClass}>
+                    <p className={styles.subtitle}>Requested Class</p>
                     <p>{registrationDate}</p>
                 </div>
                 <div className = {styles.contactInfo}>
-                    <p>{contactFirstName}</p>
-                    <p>{contactLastName}</p>
+                    <p className={styles.subtitle}> Parent/Gaurdian Contact</p>
+                    <div className = {styles.nameDiv}>
+                        <p>{contactFirstName}</p>
+                        <p>{contactLastName}</p>
+                    </div>
                     <p>{email}</p>
                     <p>{phone}</p>
                 </div>
