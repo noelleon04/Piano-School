@@ -139,3 +139,66 @@
   font-weight: bold;
   margin-bottom: 0;
 }
+
+
+.registrationSection{
+    width: 60%;
+    margin-inline: auto;
+    margin-top: 40px;
+    background-color: #f1f5f9 ;
+    padding:16px;
+    border-radius: 12px;
+}
+
+.registrationSection h1{
+    margin-bottom: 24px;
+
+}
+
+.cardDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    max-height: 600px;
+    overflow-y: auto;
+
+}
+
+.navBar{
+    display: flex;
+    background-color: white;
+    gap: 30px;
+    padding: 20px;
+    align-items: center;
+}
+
+.navBar h1{
+    margin-right: 100px;
+}
+
+.navBar p{
+    cursor: pointer;
+    position:relative;
+    padding-bottom: 8px;
+}
+
+.navBar p::after{
+    content: "";
+    position:absolute;
+    left:0;
+    bottom: 0;
+    
+    height: 3px;
+    width:100%;
+    background-color: #2563eb ;
+    border-radius: 2px;
+
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
+}
+
+.navBar p:hover::after {
+    transform: scaleX(1);
+}
