@@ -1,16 +1,8 @@
 "use client"
 
 import styles from "./AdminPage.module.css"
+import { AdminCardProp } from "./admin.types"
 
-type AdminCardProps = {
-    courseName: string;
-    registrationDate: string;
-    studentName: string;
-    contactFirstName: string;
-    contactLastName: string;
-    email: string;
-    phone: string;
-}
 export default function adminCards(    {
     courseName,
     registrationDate,
@@ -18,7 +10,7 @@ export default function adminCards(    {
     contactFirstName,
     contactLastName,
     email,
-    phone} : AdminCardProps){
+    phone} : AdminCardProp){
         return(
             <div className = {styles.cardContainer}>
                 <div className = {styles.studentInfo}>
